@@ -63,13 +63,13 @@ export const FeedCard = ({ checkin, onEdit, onDelete, onClick }: FeedCardProps) 
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-32">
               <DropdownMenuItem onClick={() => onEdit?.(checkin.id)}>
-                編集
+                Edit
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => onDelete?.(checkin.id)}
                 className="text-destructive focus:text-destructive"
               >
-                削除
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

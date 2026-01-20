@@ -25,20 +25,20 @@ const Timeline = () => {
   };
 
   const handleCardClick = (id: string) => {
-    toast.info('地点详情页即将推出');
+    toast.info('Place details coming soon');
   };
 
   const handleEdit = (id: string) => {
-    toast.info(`编辑记录 ${id}`);
+    toast.info(`Editing record ${id}`);
   };
 
   const handleDelete = (id: string) => {
-    toast.error(`删除记录 ${id}`);
+    toast.error(`Deleting record ${id}`);
   };
 
   const handleSelectDate = (date: Date | undefined) => {
     if (date) {
-      toast.info(`已选择 ${date.toLocaleDateString()}`);
+      toast.info(`Selected ${date.toLocaleDateString()}`);
     }
   };
 

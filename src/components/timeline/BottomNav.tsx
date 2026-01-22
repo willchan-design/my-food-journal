@@ -1,4 +1,5 @@
-import { Clock, Search, User, Plus } from 'lucide-react';
+import { Clock, FolderHeart, User, Plus, MoreHorizontal } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface NavItemProps {
@@ -22,17 +23,25 @@ const NavItem = ({ icon, label, isActive, onClick }: NavItemProps) => (
 );
 
 export const BottomNav = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-20 glass border-t border-border/50">
       <div className="max-w-md mx-auto px-4 flex items-center justify-around">
         <NavItem
           icon={<Clock className="w-5 h-5" />}
           label="Timeline"
-          isActive
+          isActive={isActive('/')}
+          onClick={() => navigate('/')}
         />
         <NavItem
-          icon={<Search className="w-5 h-5" />}
-          label="Explore"
+          icon={<FolderHeart className="w-5 h-5" />}
+          label="Collections"
+          isActive={isActive('/collections')}
+          onClick={() => navigate('/collections')}
         />
         
         {/* Center Add Button */}
@@ -43,10 +52,12 @@ export const BottomNav = () => {
         <NavItem
           icon={<User className="w-5 h-5" />}
           label="Profile"
+          onClick={() => {}}
         />
         <NavItem
-          icon={<div className="w-5 h-5 rounded bg-muted" />}
+          icon={<MoreHorizontal className="w-5 h-5" />}
           label="More"
+          onClick={() => {}}
         />
       </div>
       {/* Safe area padding for notched devices */}

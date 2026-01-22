@@ -1,7 +1,7 @@
 import { MapPin, MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RatingBadge } from './RatingBadge';
-import type { CheckIn } from '@/data/mockCheckins';
+import type { CheckIn, Rating } from '@/data/mockCheckins';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,13 +16,26 @@ interface FeedCardProps {
   onClick?: (id: string) => void;
 }
 
+const ratingBorderColors: Record<Rating, string> = {
+  loved: 'border-l-rating-loved',
+  ok: 'border-l-rating-ok',
+  not: 'border-l-rating-not',
+};
+
 export const FeedCard = ({ checkin, onEdit, onDelete, onClick }: FeedCardProps) => {
+  const time = checkin.timestamp.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+
   return (
     <div
       className={cn(
-        'group relative bg-card rounded-xl shadow-soft transition-all duration-200',
+        'group relative bg-card rounded-xl border-l-4 shadow-soft transition-all duration-200',
         'hover:shadow-soft-lg hover:-translate-y-0.5 cursor-pointer',
-        'animate-fade-in'
+        'animate-fade-in',
+        ratingBorderColors[checkin.rating]
       )}
       onClick={() => onClick?.(checkin.id)}
     >
@@ -97,9 +110,10 @@ export const FeedCard = ({ checkin, onEdit, onDelete, onClick }: FeedCardProps) 
           </div>
         )}
 
-        {/* Footer: Rating */}
-        <div className="flex items-center pt-2 border-t border-border/50">
+        {/* Footer: Rating + Time */}
+        <div className="flex items-center justify-between pt-2 border-t border-border/50">
           <RatingBadge rating={checkin.rating} />
+          <span className="text-xs text-muted-foreground">{time}</span>
         </div>
       </div>
     </div>

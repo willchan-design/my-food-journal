@@ -1,0 +1,59 @@
+{
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "share": "分享",
+    "add": "添加",
+    "search": "搜索",
+    "filter": "筛选",
+    "loading": "加载中...",
+    "noData": "暂无数据"
+  },
+  "nav": {
+    "timeline": "时间线",
+    "collections": "收藏夹",
+    "explore": "发现",
+    "profile": "我的"
+  },
+  "timeline": {
+    "title": "时间线",
+    "today": "今天",
+    "yesterday": "昨天",
+    "listView": "列表视图",
+    "calendarView": "日历视图",
+    "addCheckin": "添加打卡"
+  },
+  "collections": {
+    "title": "收藏夹",
+    "myCollections": "我的收藏",
+    "collaborative": "协作",
+    "private": "私密",
+    "public": "公开",
+    "places": "个地点",
+    "place": "个地点",
+    "addPlace": "添加地点",
+    "addFirstPlace": "添加第一个地点",
+    "emptyState": "还没有地点，快来添加你喜欢的地方吧！",
+    "manageCollaborators": "管理协作者",
+    "listView": "列表",
+    "mapView": "地图"
+  },
+  "place": {
+    "loved": "超爱",
+    "ok": "还行",
+    "notForMe": "不太行",
+    "addedBy": "添加者"
+  },
+  "date": {
+    "today": "今天",
+    "yesterday": "昨天",
+    "daysAgo": "{{count}}天前"
+  },
+  "language": {
+    "en": "English",
+    "zh": "中文",
+    "switch": "语言"
+  }
+}

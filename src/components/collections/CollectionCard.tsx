@@ -20,10 +20,10 @@ interface CollectionCardProps {
   onDelete?: () => void;
 }
 
-const borderColors = {
-  collaborative: 'border-l-blue-400',
-  public: 'border-l-primary',
-  private: 'border-l-muted-foreground/30',
+const backgroundColors = {
+  collaborative: 'bg-blue-50/50 dark:bg-blue-950/20',
+  public: 'bg-card',
+  private: 'bg-muted/30',
 };
 
 const formatDate = (date: Date) => {
@@ -44,19 +44,19 @@ export const CollectionCard = ({
   onManageCollaborators,
   onDelete,
 }: CollectionCardProps) => {
-  const borderColor = collection.is_collaborative 
-    ? borderColors.collaborative 
+  const bgColor = collection.is_collaborative 
+    ? backgroundColors.collaborative 
     : collection.visibility === 'private' 
-      ? borderColors.private 
-      : borderColors.public;
+      ? backgroundColors.private 
+      : backgroundColors.public;
 
   return (
     <Card
       className={cn(
-        'relative p-4 border-l-4 cursor-pointer transition-all duration-200',
+        'relative p-4 cursor-pointer transition-all duration-200',
         'hover:shadow-soft hover:-translate-y-0.5',
         'group',
-        borderColor
+        bgColor
       )}
       onClick={onClick}
     >

@@ -1,5 +1,6 @@
 import { Clock, FolderHeart, User, Plus, MoreHorizontal } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 interface NavItemProps {
@@ -25,6 +26,7 @@ const NavItem = ({ icon, label, isActive, onClick }: NavItemProps) => (
 export const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   
   const isActive = (path: string) => location.pathname === path;
 
@@ -33,13 +35,13 @@ export const BottomNav = () => {
       <div className="max-w-md mx-auto px-4 flex items-center justify-around">
         <NavItem
           icon={<Clock className="w-5 h-5" />}
-          label="Timeline"
+          label={t('nav.timeline')}
           isActive={isActive('/')}
           onClick={() => navigate('/')}
         />
         <NavItem
           icon={<FolderHeart className="w-5 h-5" />}
-          label="Collections"
+          label={t('nav.collections')}
           isActive={isActive('/collections')}
           onClick={() => navigate('/collections')}
         />
@@ -51,12 +53,12 @@ export const BottomNav = () => {
         
         <NavItem
           icon={<User className="w-5 h-5" />}
-          label="Profile"
+          label={t('nav.profile')}
           onClick={() => {}}
         />
         <NavItem
           icon={<MoreHorizontal className="w-5 h-5" />}
-          label="More"
+          label={t('nav.explore')}
           onClick={() => {}}
         />
       </div>

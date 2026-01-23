@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { FolderPlus } from 'lucide-react';
 import { CollectionsHeader } from '@/components/collections/CollectionsHeader';
@@ -18,6 +19,7 @@ const filters: { key: FilterType; label: string }[] = [
 ];
 
 const Collections = () => {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
   const filteredCollections = mockCollections.filter((collection) => {
@@ -38,7 +40,7 @@ const Collections = () => {
   };
 
   const handleCollectionClick = (collection: Collection) => {
-    toast.info(`Opening "${collection.title}" - Coming soon!`);
+    navigate(`/collections/${collection.id}`);
   };
 
   const handleShare = (collection: Collection) => {

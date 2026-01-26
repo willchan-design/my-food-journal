@@ -94,7 +94,7 @@ const CollectionDetail = () => {
 
   const handlePlaceClick = (place: Place) => {
     setSelectedPlaceId(place.id);
-    toast.info(`Opening "${place.name}" - Coming soon!`);
+    navigate(`/collections/${id}/places/${place.id}`);
   };
 
   const clearFilters = () => {

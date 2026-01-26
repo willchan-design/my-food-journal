@@ -5,8 +5,15 @@ import { List, Map, Plus } from 'lucide-react';
 import { CollectionDetailHeader } from '@/components/collections/CollectionDetailHeader';
 import { PlaceCard } from '@/components/collections/PlaceCard';
 import { CollectionMap } from '@/components/collections/CollectionMap';
+import { AddPlaceForm } from '@/components/collections/AddPlaceForm';
 import { BottomNav } from '@/components/timeline/BottomNav';
 import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import { mockCollectionWithPlaces, Place } from '@/data/mockPlaces';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +24,8 @@ const CollectionDetail = () => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
+  const [isAddPlaceOpen, setIsAddPlaceOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const collection = id ? mockCollectionWithPlaces[id] : null;
 
@@ -50,7 +59,25 @@ const CollectionDetail = () => {
   };
 
   const handleAddPlace = () => {
-    toast.info('Add place - Coming soon!');
+    setIsAddPlaceOpen(true);
+  };
+
+  const handleAddPlaceSubmit = (data: {
+    name: string;
+    address: string;
+    city: string;
+    cuisine: string;
+    rating: 'loved' | 'ok' | 'not_for_me';
+    photo: string | null;
+    notes: string;
+  }) => {
+    setIsSubmitting(true);
+    // Simulate API call
+    setTimeout(() => {
+      toast.success(`"${data.name}" added to collection!`);
+      setIsAddPlaceOpen(false);
+      setIsSubmitting(false);
+    }, 500);
   };
 
   const handlePlaceClick = (place: Place) => {
@@ -154,6 +181,22 @@ const CollectionDetail = () => {
       </main>
 
       <BottomNav />
+
+      {/* Add Place Sheet */}
+      <Sheet open={isAddPlaceOpen} onOpenChange={setIsAddPlaceOpen}>
+        <SheetContent side="bottom" className="h-[90vh] rounded-t-2xl">
+          <SheetHeader className="pb-4">
+            <SheetTitle className="font-serif text-xl">Add New Place</SheetTitle>
+          </SheetHeader>
+          <div className="overflow-y-auto h-[calc(100%-60px)] pb-safe">
+            <AddPlaceForm
+              onSubmit={handleAddPlaceSubmit}
+              onCancel={() => setIsAddPlaceOpen(false)}
+              isSubmitting={isSubmitting}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };

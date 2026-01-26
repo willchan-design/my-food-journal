@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { List, Map, Plus } from 'lucide-react';
@@ -6,6 +6,7 @@ import { CollectionDetailHeader } from '@/components/collections/CollectionDetai
 import { PlaceCard } from '@/components/collections/PlaceCard';
 import { CollectionMap } from '@/components/collections/CollectionMap';
 import { AddPlaceForm } from '@/components/collections/AddPlaceForm';
+import { PlaceFilters, PlaceFiltersState, filterPlaces } from '@/components/collections/PlaceFilters';
 import { BottomNav } from '@/components/timeline/BottomNav';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,8 +27,19 @@ const CollectionDetail = () => {
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [isAddPlaceOpen, setIsAddPlaceOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [filters, setFilters] = useState<PlaceFiltersState>({
+    searchQuery: '',
+    ratings: [],
+    cuisines: [],
+  });
 
   const collection = id ? mockCollectionWithPlaces[id] : null;
+
+  // Filter places based on current filters - must be before early return
+  const filteredPlaces = useMemo(() => {
+    if (!collection) return [];
+    return filterPlaces(collection.places, filters);
+  }, [collection, filters]);
 
   if (!collection) {
     return (
@@ -85,6 +97,10 @@ const CollectionDetail = () => {
     toast.info(`Opening "${place.name}" - Coming soon!`);
   };
 
+  const clearFilters = () => {
+    setFilters({ searchQuery: '', ratings: [], cuisines: [] });
+  };
+
   return (
     <div className="min-h-screen bg-background pb-24">
       <CollectionDetailHeader
@@ -139,21 +155,32 @@ const CollectionDetail = () => {
       {/* Content */}
       <main className="max-w-md mx-auto">
         {viewMode === 'list' ? (
-          <div className="px-4 py-4 space-y-3">
-            {collection.places.map((place, index) => (
-              <div
-                key={place.id}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <PlaceCard
-                  place={place}
-                  onClick={() => handlePlaceClick(place)}
-                  isSelected={selectedPlaceId === place.id}
-                />
-              </div>
-            ))}
+          <div className="px-4 py-4 space-y-4">
+            {/* Search and Filters */}
+            <PlaceFilters
+              places={collection.places}
+              filters={filters}
+              onFiltersChange={setFilters}
+            />
 
+            {/* Places List */}
+            <div className="space-y-3">
+              {filteredPlaces.map((place, index) => (
+                <div
+                  key={place.id}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <PlaceCard
+                    place={place}
+                    onClick={() => handlePlaceClick(place)}
+                    isSelected={selectedPlaceId === place.id}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Empty state - no places in collection */}
             {collection.places.length === 0 && (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
@@ -168,11 +195,27 @@ const CollectionDetail = () => {
                 </Button>
               </div>
             )}
+
+            {/* Empty state - no matching results */}
+            {collection.places.length > 0 && filteredPlaces.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <p className="text-sm text-muted-foreground mb-3">
+                  No places match your filters
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={clearFilters}
+                >
+                  Clear filters
+                </Button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="h-[calc(100vh-180px)]">
             <CollectionMap
-              places={collection.places}
+              places={filteredPlaces}
               selectedPlaceId={selectedPlaceId}
               onPlaceSelect={handlePlaceClick}
             />
